@@ -1,0 +1,23 @@
+# Last Modified: Mon Sep 28 19:56:21 2020
+#include <tunables/global>
+
+# vim:syntax=apparmor
+# AppArmor policy for netpot
+# ###AUTHOR###
+# ###COPYRIGHT###
+# ###COMMENT###
+# No template variables specified
+
+
+/usr/bin/netpot {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/nis>
+  #include <abstractions/python>
+  #include <abstractions/postfix-common>
+
+  /usr/bin/python3.7 mrix,
+  owner /usr/bin/ r,
+  owner /usr/bin/netpot r,
+
+}
