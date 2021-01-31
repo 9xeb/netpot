@@ -55,7 +55,7 @@ def start_honeypot(ports):
 	with concurrent.futures.ThreadPoolExecutor() as executor:	# NOTE: max_workers=N can be used to set a custom number of worker threads in the pool
 									# by default it is (number of processors * 5)
 		sockets = [ bind_to_socket(port) for port in ports ]	# bind to all sockets
-		drop_privileges()					# drop privileges after binding to all ports and before actually listening on them
+		drop_privileges("netpot", "netpot")			# drop privileges after binding to all ports and before actually listening on them
 		futures = [ executor.submit(listen_to_socket, sock=socket) for socket in sockets if socket is not None ]	# enqueue one server task for each port
 																# if binding to that specific port succeded
 		for future in concurrent.futures.as_completed(futures):

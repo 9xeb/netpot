@@ -32,12 +32,19 @@ copy()
 	/usr/bin/systemctl daemon-reload
 }
 
+create_system_user()
+{
+	echo "Creating netpot system user for privilege separation..."
+	useradd --system --shell /usr/sbin/nologin netpot || remove
+}
+
 remove()
 {
 	rm /usr/bin/netpot.py
 	rm /usr/bin/netpotd.sh
 	rm /etc/apparmor.d/usr.bin.netpot
 	rm /etc/systemd/system/netpotd.service
+	deluser netpot
 	failure
 }
 
@@ -46,5 +53,6 @@ dpkg-query -l ipset &&
 {
 	echo "[*] Installing netpotd low interaction honeypot"
 	copy
+	create_system_user
 	echo "[*] Installation complete. Run 'systemctl <status|start|stop|restart|enable|disable> netpotd' for managing netpotd."
 }
