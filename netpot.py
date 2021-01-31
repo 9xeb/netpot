@@ -6,6 +6,7 @@ import threading
 
 HOST = "0.0.0.0"
 threads_lock = threading.Lock()			# acquired when threads are accessing a global shared resource (for example printf to stderr)
+syslog.openlog(ident="netpot[%s]" % os.getpid())	# set argument string to prepend for subsequent syslog() calls
 
 def drop_privileges(target_username='nobody', target_groupname='nogroup'):
 	if os.getuid() != 0:	# if effective user id is not root then there are no privileges to drop
@@ -34,7 +35,7 @@ def listen_to_socket(sock):
 		conn.close()
 		with threads_lock:
 			print(addr[0], flush=True)
-			syslog.syslog("[NETPOT] %s" % addr[0])
+			syslog.syslog("%s" % addr[0])
 
 def bind_to_socket(port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
