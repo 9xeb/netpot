@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # TODO: ipset persistent and iptables persistent
+# NOTE: this runs as root to be able to work with iptables and ipset.
+# in order to reduce risks this script does not expose itself on the network, instead it receives IPs from netpot.py
+# and relays them to ipset
 
 if [[ ! -x /usr/sbin/ipset ]]
 then
@@ -22,13 +25,6 @@ fi
 
 #NETPOT="/usr/bin/netpot.py"
 
-# Check arguments
-#if [[ $# -lt 1 ]]; then echo "netpotd: Need at least one port"; exit 1; fi
-#for arg in $@
-#do
-#	if [[ arg -lt 1 || arg -gt 65535 ]]; then echo "netpotd: Invalid port"; exit 1; fi
-#done
-
 # Start netpot daemon
 echo "netpotd: Starting daemon..."
 
@@ -48,8 +44,7 @@ then
 			then
 				/usr/sbin/ipset add netpot "$ip"
 			fi
-
-			printf "IP: %s" $ip
+			# printf "IP: %s" $ip
 		done;
 	}
 	exit 0
