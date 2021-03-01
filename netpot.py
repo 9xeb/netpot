@@ -48,8 +48,8 @@ def bind_to_socket(port):
 				print("netpot: listening on port %d" % port, file=sys.stderr)
 			return s
 		except OSError: 	# raised when port binding fails
+			time.sleep(1)	# wait some time before retrying to bind to socket
 			continue
-			#time.sleep(2) 	# wait 2 seconds before retrying to bind socket
 	return		# return None if could not bind to port
 
 def start_honeypot(ports):
