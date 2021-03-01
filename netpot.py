@@ -70,13 +70,6 @@ def validate_port_arguments(args):
 	# look for invalid port arguments
 	for port in args:
 		if ((int(port) < 1) or (int(port) > 65535)):
-			raise ValueError('Invalid port '+port)
-
-	if len(sys.argv) < 2:
-		raise ValueError('Need at least one argument')
-
-	for port in sys.argv[1:]:
-		if ((int(port) < 1) or (int(port) > 65535)):
 			raise ValueError('Invalid port %s' % port)
 
 if len(sys.argv) < 2:
