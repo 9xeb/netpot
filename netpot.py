@@ -34,7 +34,7 @@ def listen_to_socket(sock):
 		conn, addr = sock.accept()
 		conn.close()
 		with threads_lock:
-			print(addr[0], flush=True)
+			print(addr[0], flush=True) # triggers one netpotd.sh iteration
 			syslog.syslog("%s" % addr[0])
 
 def bind_to_socket(port):
@@ -77,9 +77,10 @@ if len(sys.argv) < 2:
 	default_ports = [ 21, 22, 80, 139, 443, 445, 8080 ] # FTP, SSH, SMB, HTTP, HTTPS as default honeypot ports
 	start_honeypot(default_ports)
 else:
+        # user provided some ports (must validate them first)
 	try:
 		validate_port_arguments(sys.argv[1:])	# can throw a ValueError if user provided invalid arguments
 		start_honeypot([ int(argument) for argument in sys.argv[1:] ])
 	except ValueError:
-		print("At least one given port is invalid")
+		print("At least one given port is invalid", file=sys.stderr)
 		exit(1)
