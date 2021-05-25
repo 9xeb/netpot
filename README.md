@@ -12,5 +12,5 @@ systemctl start netpotd
 You can make sure netpot is listening with:
 
 ```
-ss -tpan
+ss -tpl
 ```
