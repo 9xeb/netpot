@@ -3,7 +3,7 @@ Description=netpotd low interaction honeypot
 After=network.target ufw.target
 
 [Service]
-ExecStart=/usr/bin/netpotd 21 22 80 139 443 445 8080
+ExecStart=/usr/bin/netpotd
 Restart=on-failure
 Type=simple
 
