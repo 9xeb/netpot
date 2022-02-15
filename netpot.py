@@ -74,7 +74,7 @@ def validate_port_arguments(args):
 
 if len(sys.argv) < 2:
 	# if user does not provide a list of ports then a default one is chosen
-	default_ports = [ 21, 22, 80, 139, 443, 445, 8080 ] # FTP, SSH, SMB, HTTP, HTTPS as default honeypot ports
+	default_ports = [ 21, 22, 25, 80, 110, 139, 443, 445, 8080 ] # FTP, SSH, SMTP, POP3, SMB, HTTP, HTTPS as default honeypot ports
 	start_honeypot(default_ports)
 else:
         # user provided some ports (must validate them first)
