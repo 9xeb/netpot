@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# unused
-copy_script() {
-	echo "Copying "$1" to /usr/bin ..."
-	cp ./$1 /usr/bin/$1 || remove
-	chmod 750 /usr/bin/$1 | remove
-}
-
 failure()
 {
 	echo "[!] Failed install"
@@ -25,7 +18,7 @@ copy()
 	echo "[*] Loading apparmor profile for exposed netpot listener..."
 	cp ./apparmor/usr.bin.netpot /etc/apparmor.d/ || no_apparmor
 	chmod 640 /etc/apparmor.d/usr.bin.netpot || no_apparmor
-	/usr/sbin/apparmor_parser -r /etc/apparmor.d/usr.bin.ntepot || no_apparmor
+	/usr/sbin/apparmor_parser -r /etc/apparmor.d/usr.bin.netpot || no_apparmor
 
 	echo "[*] Setting up systemd unit configuration file..."
 	cp ./systemd/netpotd.service /etc/systemd/system/ || remove
