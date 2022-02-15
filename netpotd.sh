@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script exists for separation of privileges:
+# This daemon script exists for separation of privileges:
 # netpot.py exposes ports and drops privileges to reduce attack surface
 # netpotd.sh runs as root and interacts directly with iptables and ipset
 # they are linked by a pipe through which remote IPs are written when a connection happens
@@ -25,14 +25,9 @@ else
 	iptables -I FORWARD -m set --match-set netpot src -j DROP || { echo "Iptables failed"; exit 1; }
 fi
 
-
-#IPV4_REGEX="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
-
-
 # Start netpot daemon
 echo "netpotd: Starting daemon..."
 
-# NOTE: sterr is shared even inside { }, we show debugging info using >&2, redirecting to stderr
 if [[ -x /usr/bin/netpot ]]
 then
 	/usr/bin/netpot | \
@@ -53,7 +48,6 @@ then
                                 # if it is not a valid IP, we let ipset handle it
 				/usr/sbin/ipset add netpot "$ip"
 			fi
-			# printf "IP: %s" $ip
 		done;
 	}
 	exit 0
