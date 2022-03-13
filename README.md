@@ -20,3 +20,4 @@ Run
 
 ### TODO:
  - UDP support (DNS, NTP)
+ - Windows event logs support
