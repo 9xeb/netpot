@@ -5,7 +5,7 @@ import concurrent.futures	# provide ThreadPoolExecutor and other support functio
 import threading
 
 HOST = "0.0.0.0"
-threads_lock = threading.Lock()			# acquired when threads are accessing a global shared resource (for example printf to stderr)
+threads_lock = threading.Lock()			# acquired when threads access a global shared resource (for example printf to stderr)
 syslog.openlog(ident="netpot[%s]" % os.getpid())	# set argument string to prepend for subsequent syslog() calls
 
 def drop_privileges(target_username='nobody', target_groupname='nogroup'):
@@ -23,7 +23,7 @@ def drop_privileges(target_username='nobody', target_groupname='nogroup'):
 	os.setgid(target_gid)	# setgid first, before setuid, otherwire permission denied happens
 	os.setuid(target_uid)
 
-	# set a very conservative mask
+	# set a very conservative umask
 	os.umask(0o077)
 
 
@@ -34,8 +34,8 @@ def listen_to_socket(sock):
 		conn, addr = sock.accept()
 		conn.close()
 		with threads_lock:
-			print(addr[0], flush=True) # triggers one netpotd.sh iteration
-			syslog.syslog("%s" % addr[0])
+			#print(addr[0], flush=True) # triggers one netpotd.sh iteration
+			syslog.syslog("IP:%s LPORT:%s" % (addr[0], sock.getsockname()[1]))
 
 def bind_to_socket(port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -50,7 +50,7 @@ def bind_to_socket(port):
 		except OSError: 	# raised when port binding fails
 			time.sleep(1)	# wait some time before retrying to bind to socket
 			continue
-	return		# return None if could not bind to port
+	return		# return None if socket binding failed
 
 def start_honeypot(ports):
 	with concurrent.futures.ThreadPoolExecutor() as executor:	# NOTE: max_workers=N can be used to set a custom number of worker threads in the pool

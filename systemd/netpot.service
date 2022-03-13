@@ -1,0 +1,13 @@
+[Unit]
+Description=NetPot low interaction honeypot
+After=network.target
+
+[Service]
+# add custom ports as netpot arguments below if you wish
+ExecStart=/usr/bin/netpot
+Restart=on-failure
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+Alias=netpot.service

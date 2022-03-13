@@ -12,8 +12,8 @@ copy()
 	cp ./netpot.py /usr/bin/netpot || remove
         chmod 750 /usr/bin/netpot || remove
 
-	cp ./netpotd.sh /usr/bin/netpotd || remove
-        chmod 750 /usr/bin/netpotd || remove
+	#cp ./netpotd.sh /usr/bin/netpotd || remove
+        #chmod 750 /usr/bin/netpotd || remove
 
 	echo "[*] Loading apparmor profile for exposed netpot listener..."
 	cp ./apparmor/usr.bin.netpot /etc/apparmor.d/ || no_apparmor
@@ -21,7 +21,7 @@ copy()
 	/usr/sbin/apparmor_parser -r /etc/apparmor.d/usr.bin.netpot || no_apparmor
 
 	echo "[*] Setting up systemd unit configuration file..."
-	cp ./systemd/netpotd.service /etc/systemd/system/ || remove
+	cp ./systemd/netpot.service /etc/systemd/system/ || remove
 	/usr/bin/systemctl daemon-reload || /bin/systemctl daemon-reload
 }
 
@@ -33,15 +33,15 @@ no_apparmor()
 create_system_user()
 {
 	echo "[*] Creating netpot system user for privilege separation..."
-	useradd --system --shell /usr/sbin/nologin netpot || remove
+	/usr/bin/id netpot || /usr/sbin/useradd --system --shell /usr/sbin/nologin netpot || remove
 }
 
 remove()
 {
-	rm /usr/bin/netpot.py &> /dev/null
-	rm /usr/bin/netpotd.sh &> /dev/null
+	rm /usr/bin/netpot &> /dev/null
+	rm /usr/bin/netpotd &> /dev/null
 	rm /etc/apparmor.d/usr.bin.netpot &> /dev/null
-	rm /etc/systemd/system/netpotd.service &> /dev/null
+	rm /etc/systemd/system/netpot.service &> /dev/null
 	deluser netpot &> /dev/null
 	failure
 }
@@ -52,5 +52,5 @@ dpkg-query -l ipset &&
 	echo "[*] Installing netpotd low interaction honeypot"
 	copy
 	create_system_user
-	echo "[*] Installation complete. Run 'systemctl <status|start|stop|restart|enable|disable> netpotd' for managing netpotd."
+	echo "[*] Installation complete. Run 'systemctl <status|start|stop|restart|enable|disable> netpot' for managing netpot."
 }

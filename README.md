@@ -1,20 +1,22 @@
-# netpot
-Simple multithreading low interaction honeypot written in python3 and bash.
-The idea behind it is simple. It waits for incoming TCP connections on a specific set of ports, accepts handshakes and immediately closes incoming connections, logging the remote IP and updating an ipset blacklist.
-A very strict apparmor profile is provided, if apparmor tools are available on the system.
+# NetPot
+This is NetPot, a multithreaded minimal interaction honeypot written in python3.
+NetPot is intended to run on internal networks, where incoming connections on certain ports always signify an anomaly or an intrusion.
+The idea behind it is simple. It waits for incoming TCP connections on a specific set of ports, accepts handshakes and immediately closes incoming connections, logging the remote IP to syslog. It then proceeds to listen for the next incoming connection.
 
-First of all make sure ipset is installed, then:
+It is up to the administrator what to do with logged IPs. Logs can can be easily parsed by your preferred collector.
+A very strict apparmor profile is provided, if apparmor tools are available on the system. In any case root privileges are dropped right before listening.
 
-```
-# ./install.sh
-# systemctl start netpotd
-```
-
-You can make sure netpot is listening with:
-
-```
-$ ss -tpl
+Install
+```bash
+ $ git clone https://github.com/9xeb/netpot
+ $ cd netpot
+ # ./install.sh
 ```
 
-### TODO
-UDP services (DNS, NTP)
+Run
+```bash
+ # systemctl <status|start|stop|restart|enable|disable> netpot
+```
+
+### TODO:
+ - UDP support (DNS, NTP)
