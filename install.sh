@@ -12,9 +12,6 @@ copy()
 	cp ./netpot.py /usr/bin/netpot || remove
         chmod 750 /usr/bin/netpot || remove
 
-	#cp ./netpotd.sh /usr/bin/netpotd || remove
-        #chmod 750 /usr/bin/netpotd || remove
-
 	echo "[*] Loading apparmor profile for exposed netpot listener..."
 	cp ./apparmor/usr.bin.netpot /etc/apparmor.d/ || no_apparmor
 	chmod 640 /etc/apparmor.d/usr.bin.netpot || no_apparmor
@@ -46,11 +43,7 @@ remove()
 	failure
 }
 
-echo "[?] Checking dependencies"
-dpkg-query -l ipset &&
-{
-	echo "[*] Installing netpotd low interaction honeypot"
-	copy
-	create_system_user
-	echo "[*] Installation complete. Run 'systemctl <status|start|stop|restart|enable|disable> netpot' for managing netpot."
-}
+echo "[*] Installing netpotd low interaction honeypot"
+copy
+create_system_user
+echo "[*] Installation complete. Run 'systemctl <status|start|stop|restart|enable|disable> netpot' for managing netpot."
