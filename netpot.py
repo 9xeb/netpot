@@ -35,7 +35,7 @@ def listen_to_socket(sock):
 		conn.close()
 		with threads_lock:
 			#print(addr[0], flush=True) # triggers one netpotd.sh iteration
-			syslog.syslog("IP:%s LPORT:%s" % (addr[0], sock.getsockname()[1]))
+			syslog.syslog("ip:%s lport:%s" % (addr[0], sock.getsockname()[1]))
 
 def bind_to_socket(port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
