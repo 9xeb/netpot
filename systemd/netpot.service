@@ -1,6 +1,6 @@
 [Unit]
 Description=NetPot low interaction honeypot
-After=network.target
+After=network-online.target
 
 [Service]
 # add custom ports as netpot arguments below if you wish
